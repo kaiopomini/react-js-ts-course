@@ -1,20 +1,8 @@
-import express from 'express';
+import app from './app';
 
-class App {
-  constructor() {
-    this.app = express();
-    this.middlewares();
-    this.routes();
-  }
+const port = 3001;
 
-  middlewares() {
-    this.app.use(express.urlencoded({ extended: true }));
-    this.app.use(express.json());
-  }
-
-  routes() {
-
-  }
-}
-
-export default new App().app;
+app.listen(port, () => {
+  console.log();
+  console.log(`Escutando na porta ${port}`);
+});
