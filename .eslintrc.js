@@ -15,5 +15,6 @@ module.exports = {
     'class-methods-use-this': 'off',
     'linebreak-style': ['error', 'windows'],
     'import/first': 'off',
+
   },
 };
