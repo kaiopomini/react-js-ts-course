@@ -4,7 +4,8 @@ class UserController {
   async store(req, res) {
     try {
       const newUser = await User.create(req.body);
-      return res.json(newUser);
+      const { id, name, email } = newUser;
+      return res.json({ id, name, email });
     } catch (error) {
       return res.status(400).json({
         errors: error.errors.map((err) => err.message),
@@ -15,7 +16,7 @@ class UserController {
   // index
   async index(req, res) {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({ attributes: ['id', 'name'] });
       return res.json(users);
     } catch (error) {
       return res.json(null);
@@ -27,7 +28,8 @@ class UserController {
     try {
       const { id } = req.params;
       const user = await User.findByPk(id);
-      return res.json(user);
+      const { name } = user;
+      return res.json({ id, name });
     } catch (error) {
       return res.json(null);
     }
@@ -36,14 +38,7 @@ class UserController {
   // update
   async update(req, res) {
     try {
-      const { id } = req.params;
-      if (!id) {
-        return res.status(400).json({
-          errors: ['ID não enviado'],
-        });
-      }
-
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(req.userId);
 
       if (!user) {
         return res.status(400).json({
@@ -52,7 +47,8 @@ class UserController {
       }
 
       const updatedUser = await user.update(req.body);
-      return res.json(updatedUser);
+      const { id, name, email } = updatedUser;
+      return res.json({ id, name, email });
     } catch (error) {
       return res.status(400).json({
         errors: error.errors.map((err) => err.message),
@@ -63,14 +59,7 @@ class UserController {
   // delete
   async delete(req, res) {
     try {
-      const { id } = req.params;
-      if (!id) {
-        return res.status(400).json({
-          errors: ['ID não enviado'],
-        });
-      }
-
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(req.userId);
 
       if (!user) {
         return res.status(400).json({
